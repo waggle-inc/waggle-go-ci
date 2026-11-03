@@ -1,0 +1,22 @@
+apiVersion: automation.cloudbees.io/v1alpha1
+kind: workflow
+name: My workflow
+
+on:
+  push:
+    branches:
+      - '**'
+
+jobs:
+ ci-job: # <1>
+      steps:                     
+        - name: checkout # <2>
+          uses: https://github.com/cloudbees-io/checkout@v2
+        - name: Build Go app # <3>
+          uses: docker://golang:1.22
+          run: |
+            go build -v ./...    
+        - name: Run tests # <4>
+          uses: docker://golang:1.22
+          run: |
+            go test -v ./...
